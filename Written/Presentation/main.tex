@@ -1,0 +1,197 @@
+\documentclass{beamer}
+
+\usetheme{Boadilla}
+\useoutertheme{split}
+
+
+\input{./packages}
+\input{./commands}
+\include{./presets}
+
+\title{Convolutional autoencoder for compression of neural data}
+\subtitle{CNN for signal compression}
+\author{Philip Kroll}
+\institute{RWTH Aachen}
+\newdate{date}{15}{02}{2023}
+\date{\displaydate{date}}
+%\date{\today}
+
+\mode<presentation>{}
+
+\begin{document}
+
+\begin{frame}
+    \titlepage
+\end{frame}
+
+\begin{frame}{Background}
+	\only<1->{Goal : Investigation of pathological firing in pain receptors}
+		\begin{itemize}
+			\item<2-> Thin electrode is injected to record action potentials
+			\item<3-> Sort those action potentials to individual nerves fibres
+		\end{itemize}
+		\only<4->{\begin{figure}
+				\centering
+				\includegraphics[width=\textwidth]{./Images/marking_method_1.png}
+				\caption*{Example of the marking method}
+		\end{figure}}
+\end{frame}
+
+\begin{frame}{Why signal compression?}
+	\only<0-4>{\begin{figure}
+			\centering
+			\includegraphics[width=\textwidth]{./../../Images/signal_segment.png}
+	\end{figure}}
+	\only<5>{\begin{figure}
+		\centering
+		\includegraphics[width=\textwidth]{./../../Images/signal_segment_normalized.png}
+\end{figure}}
+	\begin{itemize}
+		\item<1-> Low signal-to-noise ratio
+		\item<1-> High variability in spike shapes
+		\item<2-> Problems: {\begin{itemize}
+				\item Identifying the spikes
+				\item Sorting spikes to individual nerve fibres
+		\end{itemize}}
+		\item<3-> Standard Sorting \& Clustering Algorithms can not be used
+	\end{itemize}
+	\centering{\only<4->{$\Rightarrow$ We need to process the data such that it is usable}}
+	\begin{itemize}
+		\item<5-> For the following: Normalize Signal to range $[0,1]$
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{How does the compression work?}
+    \begin{itemize}
+    	\item<1-> Machine Learning \only<2->{ Neural Network (Autoencoder)}
+    \end{itemize}
+
+
+	\begin{minipage}[t]{0.6\textwidth}
+			\only<3->{\begin{figure}
+				\centering
+				\includegraphics[width=\textwidth]{./../../Images/autoencoder_format.png}
+		\end{figure}}
+	\end{minipage}%
+	\begin{minipage}[t]{0.4\textwidth}
+	\begin{center}
+		\begin{itemize}
+			\item<4-> First Compression, then Decompression
+			\item<5-> Input Dimension = Output Dimension
+			\item<5-> Latent Dimension < Input Dimension
+			\item<6-> Training: Minimize the MSE between Input and Output
+			\item<7-> Compression Rate $CR = \frac{\text{Input Dimension}}{\text{Latent Dimension}}$
+		\end{itemize}
+	\end{center}
+	\end{minipage}
+	\begin{itemize}
+		\item<8-> Different Network Architectures can have different CRs
+		\item<8-> We're going to inspect CRs $2,4,8,16,32,64,128$
+	\end{itemize}	
+\end{frame}
+
+\begin{frame}{Examples}
+   \only<1>{ \begin{figure}
+   		\centering
+   		\includegraphics[width=\textwidth]{./../../Images/Presentation_Segment_Only.png}
+   \end{figure}}
+ \only<2>{ \begin{figure}
+		\centering
+		\includegraphics[width=\textwidth]{./../../Images/Presentation_Segment_CR2.png}
+\end{figure}}
+ \only<3->{ \begin{figure}
+		\centering
+		\includegraphics[width=\textwidth]{./../../Images/Presentation_Segment_CR64.png}
+\end{figure}}
+\only<3->{	\begin{itemize}
+		\item<4> About 500 sample points
+		\item<4> After compression only 8 points are stored!
+\end{itemize}}
+\end{frame}
+
+\begin{frame}{Evaluation}
+	\begin{figure}
+			\centering
+			\includegraphics[height=0.9\textheight]{./../../Images/mse.png}
+	\end{figure}
+\end{frame}
+
+\begin{frame}{Example continued}
+	 \only<1>{ \begin{figure}
+			\centering
+			\includegraphics[width=\textwidth]{./../../Images/Presentation_Segment_CR64.png}
+	\end{figure}}
+	\only<1>{	\begin{itemize}
+			\item<3> About 500 sample points
+			\item<3> After compression only $\sim 8$ points are stored!
+	\end{itemize}}
+ \only<2>{ \begin{figure}
+		\centering
+		\includegraphics[width=\textwidth]{./../../Images/Presentation_Segment_CR64_all_thresholds.png}
+\end{figure}}
+
+ \only<3>{ \begin{figure}
+		\centering
+		\includegraphics[width=\textwidth]{./../../Images/Presentation_Segment_CR64_thresholds_drawn.png}
+	\end{figure}}
+
+ \only<4->{ \begin{figure}
+		\centering
+		\includegraphics[width=0.7\textwidth]{./../../Images/Presentation_Segment_CR64_thresholds_drawn.png}
+\end{figure}}
+	\begin{itemize}
+	\item<4-> How often does the original signal cross a threshold?
+	\item<4-> How often does the decoded signal cross a threshold?
+	\item<5-> How often does the original and the decoded signal cross a threshold at the exact same position? (preserved crossing)
+	\end{itemize}
+\end{frame}
+
+
+\begin{frame}{Evaluation continued}
+\only<1>{    \begin{minipage}[t]{0.5\textwidth}
+		\begin{figure}
+			\centering
+			\includegraphics[width=\textwidth]{./../../Images/spikes_threshold_045.png}
+		\end{figure}
+	\end{minipage}%
+	\begin{minipage}[t]{0.5\textwidth}
+		\begin{figure}
+			\centering
+			\includegraphics[width=\textwidth]{./../../Images/spikes_threshold_055.png}
+		\end{figure}
+\end{minipage}}
+\only<2>{\begin{figure}
+		\centering
+		\includegraphics[height=0.9\textheight]{./../../Images/percentage_decoded.png}
+\end{figure}}
+\end{frame}
+
+\begin{frame}{Conclusion}
+	\begin{itemize}
+		    \item<1-> Problems:  \begin{itemize}
+		    	\item Identifying spikes
+		    	\item Sorting spikes to individual nerve fibres
+		    \end{itemize}
+	     	\item<2-> Basic architecture of an autoencoder
+	     	\item<3-> De-noising and smoothing of the signal 
+	     	\item<4-> Performance differences for different compression rates
+
+	\end{itemize}
+\end{frame}
+
+\begin{frame}{Future Work}
+	\begin{itemize}
+		\item<0-> Practical evaluation
+		\item<1-> Optimize the autoencoder with more meaningful metric
+		\item<2-> Check more auto-encoders, with smaller jumps in compression rate
+	\end{itemize}
+\end{frame}
+
+\begin{frame}
+    \begin{center}
+        Thank you for listening!
+    \end{center}
+\end{frame}
+
+
+\end{document}

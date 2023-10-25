@@ -1,0 +1,114 @@
+Number of spikes in orignal data across threshold 0 : 268
+Number of spikes in decoded data across threshold 0 : 0
+Number of spikes remained across threshold 0 : 0
+Percentage of spikes remained across threshold 0 : 0.0
+Number of spiked newly created across threshold 0 : 0
+------------------------------------------------------------------------------------------------------------------------------------------------------
+Number of spikes in orignal data across threshold 0.05 : 276
+Number of spikes in decoded data across threshold 0.05 : 26
+Number of spikes remained across threshold 0.05 : 13
+Percentage of spikes remained across threshold 0.05 : 4.710144927536232
+Number of spiked newly created across threshold 0.05 : 13
+------------------------------------------------------------------------------------------------------------------------------------------------------
+Number of spikes in orignal data across threshold 0.1 : 352
+Number of spikes in decoded data across threshold 0.1 : 104
+Number of spikes remained across threshold 0.1 : 77
+Percentage of spikes remained across threshold 0.1 : 21.875
+Number of spiked newly created across threshold 0.1 : 27
+------------------------------------------------------------------------------------------------------------------------------------------------------
+Number of spikes in orignal data across threshold 0.15 : 448
+Number of spikes in decoded data across threshold 0.15 : 180
+Number of spikes remained across threshold 0.15 : 151
+Percentage of spikes remained across threshold 0.15 : 33.705357142857146
+Number of spiked newly created across threshold 0.15 : 29
+------------------------------------------------------------------------------------------------------------------------------------------------------
+Number of spikes in orignal data across threshold 0.2 : 590
+Number of spikes in decoded data across threshold 0.2 : 302
+Number of spikes remained across threshold 0.2 : 260
+Percentage of spikes remained across threshold 0.2 : 44.06779661016949
+Number of spiked newly created across threshold 0.2 : 42
+------------------------------------------------------------------------------------------------------------------------------------------------------
+Number of spikes in orignal data across threshold 0.25 : 820
+Number of spikes in decoded data across threshold 0.25 : 438
+Number of spikes remained across threshold 0.25 : 386
+Percentage of spikes remained across threshold 0.25 : 47.073170731707314
+Number of spiked newly created across threshold 0.25 : 52
+------------------------------------------------------------------------------------------------------------------------------------------------------
+Number of spikes in orignal data across threshold 0.3 : 1186
+Number of spikes in decoded data across threshold 0.3 : 678
+Number of spikes remained across threshold 0.3 : 586
+Percentage of spikes remained across threshold 0.3 : 49.4097807757167
+Number of spiked newly created across threshold 0.3 : 92
+------------------------------------------------------------------------------------------------------------------------------------------------------
+Number of spikes in orignal data across threshold 0.35 : 2070
+Number of spikes in decoded data across threshold 0.35 : 1106
+Number of spikes remained across threshold 0.35 : 968
+Percentage of spikes remained across threshold 0.35 : 46.76328502415459
+Number of spiked newly created across threshold 0.35 : 138
+------------------------------------------------------------------------------------------------------------------------------------------------------
+Number of spikes in orignal data across threshold 0.4 : 4136
+Number of spikes in decoded data across threshold 0.4 : 2334
+Number of spikes remained across threshold 0.4 : 1976
+Percentage of spikes remained across threshold 0.4 : 47.77562862669246
+Number of spiked newly created across threshold 0.4 : 358
+------------------------------------------------------------------------------------------------------------------------------------------------------
+Number of spikes in orignal data across threshold 0.45 : 11960
+Number of spikes in decoded data across threshold 0.45 : 6694
+Number of spikes remained across threshold 0.45 : 5631
+Percentage of spikes remained across threshold 0.45 : 47.0819397993311
+Number of spiked newly created across threshold 0.45 : 1063
+------------------------------------------------------------------------------------------------------------------------------------------------------
+Number of spikes in orignal data across threshold 0.55 : 3584
+Number of spikes in decoded data across threshold 0.55 : 1382
+Number of spikes remained across threshold 0.55 : 738
+Percentage of spikes remained across threshold 0.55 : 20.591517857142858
+Number of spiked newly created across threshold 0.55 : 644
+------------------------------------------------------------------------------------------------------------------------------------------------------
+Number of spikes in orignal data across threshold 0.6 : 798
+Number of spikes in decoded data across threshold 0.6 : 230
+Number of spikes remained across threshold 0.6 : 70
+Percentage of spikes remained across threshold 0.6 : 8.771929824561402
+Number of spiked newly created across threshold 0.6 : 160
+------------------------------------------------------------------------------------------------------------------------------------------------------
+Number of spikes in orignal data across threshold 0.65 : 248
+Number of spikes in decoded data across threshold 0.65 : 58
+Number of spikes remained across threshold 0.65 : 10
+Percentage of spikes remained across threshold 0.65 : 4.032258064516129
+Number of spiked newly created across threshold 0.65 : 48
+------------------------------------------------------------------------------------------------------------------------------------------------------
+Number of spikes in orignal data across threshold 0.7 : 148
+Number of spikes in decoded data across threshold 0.7 : 22
+Number of spikes remained across threshold 0.7 : 2
+Percentage of spikes remained across threshold 0.7 : 1.3513513513513513
+Number of spiked newly created across threshold 0.7 : 20
+------------------------------------------------------------------------------------------------------------------------------------------------------
+Number of spikes in orignal data across threshold 0.75 : 86
+Number of spikes in decoded data across threshold 0.75 : 8
+Number of spikes remained across threshold 0.75 : 1
+Percentage of spikes remained across threshold 0.75 : 1.1627906976744187
+Number of spiked newly created across threshold 0.75 : 7
+------------------------------------------------------------------------------------------------------------------------------------------------------
+Number of spikes in orignal data across threshold 0.8 : 54
+Number of spikes in decoded data across threshold 0.8 : 2
+Number of spikes remained across threshold 0.8 : 0
+Percentage of spikes remained across threshold 0.8 : 0.0
+Number of spiked newly created across threshold 0.8 : 2
+------------------------------------------------------------------------------------------------------------------------------------------------------
+Number of spikes in orignal data across threshold 0.85 : 46
+Number of spikes in decoded data across threshold 0.85 : 2
+Number of spikes remained across threshold 0.85 : 1
+Percentage of spikes remained across threshold 0.85 : 2.1739130434782608
+Number of spiked newly created across threshold 0.85 : 1
+------------------------------------------------------------------------------------------------------------------------------------------------------
+Number of spikes in orignal data across threshold 0.9 : 34
+Number of spikes in decoded data across threshold 0.9 : 0
+Number of spikes remained across threshold 0.9 : 0
+Percentage of spikes remained across threshold 0.9 : 0.0
+Number of spiked newly created across threshold 0.9 : 0
+------------------------------------------------------------------------------------------------------------------------------------------------------
+Number of spikes in orignal data across threshold 0.95 : 36
+Number of spikes in decoded data across threshold 0.95 : 0
+Number of spikes remained across threshold 0.95 : 0
+Percentage of spikes remained across threshold 0.95 : 0.0
+Number of spiked newly created across threshold 0.95 : 0
+------------------------------------------------------------------------------------------------------------------------------------------------------

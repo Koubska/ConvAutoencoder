@@ -1,0 +1,143 @@
+\section{Proposed Solutions}
+\label{sec:propSolutions}
+As mentioned in \Cref{sec:background} a convolutional autoencoder can be used to compress and reconstruct data, particularly also neural data. 
+The compression reduces the dimension of the data of interest and thus makes spike detection and further analysis possible.
+For that to work reasonably the features, in form of the spikes have to be detected, encoded and decoded correctly. 
+In the following, it is presented how every step as shown in \Cref{fig:workflow}, except for the \textit{Analysis} is performed.
+\subsection{Preprocessing} \label{sec:preprocessing}
+As described in \Cref{sec:intro}, MNG is a technique used to record electrical activity by which we obtain the neural data of interest.
+In an in-vitro experiment in which C-fibers are stimulated from the skin of a mouse, the neural activity is recorded. 
+The stimulation times were used to find the electrical artifacts and were replaced by a piece of raw signal (noise).
+In the following, the cleaned neural signal is being referred to as \textit{data(set)}, is it is the solely used dataset.
+The data is normalized to the range $[0,1]$ by using the formula \Cref{eq:normalized} to replace a value $x$ with $x_{scaled}$. 
+The normalization step has a significant effect during training and testing. 
+It guarantees stable convergence of weights and biases. 
+Without the normalization step the training would be more complicated and slower \cite{brownlee2016deep}.
+\begin{equation}
+	\begin{split}
+		x_{scaled} &:= \frac{(x -min)}{max - min} \\
+		min &\text{: Minimum $y$-value in dataset,} \\
+		max &\text{: Maximum $y$-value in dataset}
+	\end{split}
+	\label{eq:normalized}
+\end{equation}This would reduce the dimension of the data of interest and thus make analysis and spike detection feasible.
+For that to work reasonably the features, in form of the spikes have to be detected, encoded and decoded correctly. 
+The dataset is then split into continuous segments of length $1024$.
+The sorted set of those segments is then split into a train and a test subset, where the train subset consists of $80\%$ of the whole dataset and the test subset contains the rest of the segments. 
+The segments in the train subset are used to train the CAE and the test subject is used for the respective evaluation.
+The order of the segments in the test subset is then randomized, this is done to prevent the model from memorizing the order of data.
+Shuffling the data ensures that the model is exposed to different patterns and variations in the data during training, which helps it to learn a more generalized representation of the data. 
+This improves the model's ability to make accurate predictions on new, unseen data \cite{geron2017hands,meng2019convergence}.
+\subsection{Used CAE Architectures} \label{sec:usedCaeArchitectures}
+To investigate how a CAE performs on neural data, we are going to compare different architectures which in turn realize different CRs as defined in \Cref{eq:cr}.
+As an activation function for each layer, except for the very last one of the Decoder, \textit{leaky relu}, as defined in \Cref{eq:leakyRelu} with $\alpha := 0.3$ was chosen. 
+It was shown that this prevents the \textit{vanishing gradient problem} \cite{agostinelli2014learning}.
+The last layer of the autoencoder was chosen to have the sigmoid activation function, as defined in \Cref{eq:sigmoid}, as this forces the output value to the range $[0,1]$, which is equal to the range of the input values.
+The Encoder is built by a sequence of 1D-Convolution layers, each with a different amount of filters.
+The Decoder is built by a sequence of 1D-Transposed convolution layers, each with a different amount of filters.
+A transposed convolution layer can be seen as a \textit{deconvolution}, as it is going in the opposite direction of normal convolution \cite{geron2017hands}.
+\begin{equation}
+	f(x) := \begin{cases}
+		\alpha \cdot x, & \text{if $x < 0$} \\
+		x, & \text{if $x \geq 0$}
+	\end{cases}
+	\label{eq:leakyRelu}
+\end{equation}
+\begin{equation}
+	f(x) := \frac{1}{1+e^{-x}}
+	\label{eq:sigmoid}
+\end{equation}
+No pooling layers were used, but instead, each layer in both the Encoder and the Decoder has a stride of $2$ to respectively decrease or increase the dimension of the data.
+This was done as a simplification and it was shown that this does not decrease the performance of the neural network \cite{springenberg2014striving}.
+The Decoder and the Encoder have the same amount of layers for each of the different compression rates.
+As a further simplification, the \textit{kernel size} of every layer was chosen to be $8$ and the input is zero-padded before convolution.
+The input layer is chosen to have a width of $1024 = 2^{10}$, as this coincides with the length of the segments of the data, as described in \Cref{sec:preprocessing}.
+This was chosen in combination with a stride of $2$ as this halves the width of the next layer and thus works well with a width that is a power of $2$.
+The general architectures of the CAE for each of the used CRs are presented in \Cref{fig:CrTable}.
+A more specific overview can be found in \Cref{appendix:convAutoencoderArchitectures}.
+The adaptive moment estimation \textit{(Adam)} algorithm \cite{kingma2014adam} with an initial learning rate of $0.001$, $100$ training epochs, and a batch size of $128$ was used to train the network. 
+The loss function to minimize was chosen the be the Mean-Squared Error \textit{(MSE)} between the Input of the Encoder and the Output of the Decoder, as defined in \Cref{eq:mse}.
+\begin{equation}
+	\begin{split}
+		MSE &:= \sum_{1}^{n}(y_i - \tilde{y_i})^2 \\
+		n &: \text{Number of data points,}, \\
+		y_i &: \text{$y$-value of the $i$-th input value of the Encoder}, \\
+		\tilde{y_i} &: \text{$y$-value of the $i$-th output value of the Decoder}
+	\end{split}
+	\label{eq:mse}
+\end{equation}\\
+\begin{figure}[h]
+	\centering
+	\begin{tabular}{|c|c|c|}
+		\hline
+		\makecell{Compression Rate  \\ (CR)} & \makecell{ Number of layers \\ in Encoder/Decoder} & \makecell{Number of filters \\ in last Encoder Layer} \\
+		\hline
+		2 & 3 & 4 \\
+		\hline
+		4 & 3 & 2 \\
+		\hline
+		8 & 5 & 4 \\
+		\hline
+		16 & 5 & 2 \\
+		\hline
+		32 & 6 & 2 \\
+		\hline
+		64 & 6 & 1 \\
+		\hline
+		128 & 7 & 1 \\
+		\hline
+	\end{tabular}
+
+ \caption{CAE Architecture parameters for each CR}
+ \label{fig:CrTable}
+\end{figure}
+\FloatBarrier
+\subsection{Performance Metrics} \label{sec:performanceMetrics}
+To evaluate the performance of a used CAE several metrics were used. 
+This evaluation is always done as a comparison between the normalized input signal and the output of the Decoder, unless stated otherwise.
+The following metrics are used:
+\begin{itemize}
+	\item MSE, as defined in \Cref{eq:mse}. This reflects the basic differences between the signals. A lower MSE is expected for a quality compression.
+	\item \textit{Signal-to-Noise Ratio (SNR)}, as defined in \Cref{eq:snr}. A high SNR is expected for a quality compression \cite{snrFormula}.
+	\item \textit{Threshold Analysis}, as defined in \Cref{sec:thresholdAnalysis}.
+\end{itemize}
+\begin{equation}
+	\begin{split}
+		SNR &:= 10 \cdot \log(\frac{\sum_{1}^{n}(y_i - M)^2}{\sum_{1}^{n}(y_i - \tilde{y_i})^2}) \\
+		y_i &: \text{$y$-value of the $i$-th input value,} \\
+		M &: \text{mean of the input data,} \\
+		\tilde{y_i} &: \text{$y$-value of the $i$-th output value of the Decoder}
+	\end{split}
+	\label{eq:snr}
+\end{equation}
+\subsubsection{Threshold Analysis} \label{sec:thresholdAnalysis}
+While MSE and SNR are metrics that help with the general evaluation, they do not give any insights about how well spikes in neural data get detected, encoded, and decoded.
+To do this we introduce the notion of \textit{Thresholds}. 
+A threshold is a constant value, and we detect how often and where the given signal crosses this value.
+To detect a crossing, we calculate the $x$-value (time) for a given constant. 
+The conditions necessary for a crossing are described formally in \Cref{eq:crossingCondition}.
+\begin{equation}
+	\begin{split}
+		\text{1. } &: y_i < t \leq y_{i+i}, \\
+		\text{2. } &: y_{i+1} < t \leq y_i, \\
+		t &: \text{Threshold}, \\
+		y_i &: \text{$y$-value of the $i$-th data point}, \\
+		y_{i+1} &: \text{$y$-value of the $(i+1)$-th data point}
+	\end{split}
+	\label{eq:crossingCondition}
+\end{equation}
+Crossings can be identified in the original signal, as well as the decoded signal for every compression rate.
+This enables us to count the total number of crossings for every signal of interest. 
+Further, this enables the notion of \textit{preserved crossings}, which is defined as a crossing at the same $x$-value in the original signal, as well as in the decoded signal for a given compression rate.
+Lastly, we introduce the \textit{percentage of correctly preserved crossings}, as defined in \Cref{eq:percCorrectlyPreservedCrossings}, where for a given threshold we inspect the ratio of the number of preserved crossings and crossings in the original data.
+For a well working autoencoder we expect a high percentage of correctly preserved crossings.
+\begin{equation}
+	\text{\textit{Correctly Preserved Crossings[\%]}} := \frac{\text{\#preserved crossing}}{\text{\#original crossings}} \cdot 100
+	\label{eq:percCorrectlyPreservedCrossings}
+\end{equation}
+\subsection{Environment Setup} \label{sec:EnvironmentSetup}
+Python 3.10 with the libraries Keras \cite{chollet2015keras} and Tensorflow \cite{tensorflow2015-whitepaper} is used to create and train the autoencoders.
+The experiments are performed on a PC with AMD Ryzen 7 5800X 8x 3.80GHz CPU, 32GB RAM and a AMD Radeon RX 6900 XT 16GB.
+The actual implementation was run in a docker container, which fixes the used python version and its libraries. This container can be found under \cite{amdDevContainer}.
+Note that training of a neural network is highly optimized for training on a GPU.
+All files, that were used during this project can be found under \cite{gitlabrepo}.

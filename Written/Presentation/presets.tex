@@ -1,0 +1,49 @@
+\usepackage{fancyhdr}
+ 
+%\setlength{\hoffset}{0pt}
+%\setlength{\voffset}{0.1pt}
+%\setlength{\headsep}{10pt}
+%\setlength{\textheight}{620pt}
+%\setlength{\oddsidemargin}{14.5pt} 
+%\setlength{\evensidemargin}{18.5pt}
+
+\DeclarePairedDelimiter\ceil{\lceil}{\rceil}
+\DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
+
+\renewcommand{\ttdefault}{pcr}
+\lstset{mathescape,
+	numbers={left},
+	numberstyle={\tiny\ttfamily},
+	float={h},
+	frame={lines},
+	language={C++},
+	showspaces=false,
+	morekeywords={sort, foreach,Input,Output,insert,after,in,let,var,list,update,next, select, append},
+        keywordstyle={\bfseries}% keyword style
+}
+
+\newfloat{algorithm}{ht}{loa}
+\floatname{algorithm}{Algorithm}
+
+\tikzset{
+  term/.style={
+              draw, 
+              rectangle, 
+              rectangle split, 
+              rectangle split parts=2,
+              rectangle split ignore empty parts=false, 
+              rectangle split horizontal,
+              append after command={%
+		\pgfextra{\let\mainnode=\tikzlastnode 
+                \coordinate (c1 \mainnode) at ($(\mainnode.west)!.5!(\mainnode.one split)$);
+                \coordinate (c2 \mainnode) at ($(\mainnode.one split)!.5!(\mainnode.east)$);
+		  }
+                }}}
+\def\fillrect{\vrule height 0.05cm depth 0.05cm width 0pt} 
+
+
+\theoremstyle{remark}
+\newtheorem*{remark}{Remark}
+
+
+

@@ -1,0 +1,26 @@
+\section{Conclusion}
+\label{sec:conclusion}
+In this report, we have introduced microneurography, a technique used to generate neural data.
+When analyzing this neural data there are $2$ problems, namely spike detection and spike sorting.
+The low signal-to-noise ratio of the signal and the high variability of spike shapes is problematic, because of that standard sorting and clustering algorithms for this data can not be used.
+We have introduced the notion of autoencoders, particularly the special case of a convolutional autoencoder.
+The compression rate of an autoencoder has been defined. It influences the flow of information in an autoencoder.
+To check the feasibility of using autoencoders to eliminate noise in the neural data, as well as detecting spikes we have implemented $7$ autoencoders implementing different compression rates.
+To effectively evaluate the performance of these autoencoders we have used standard metrics such as MSE and SNR, as well as introduced the notion of thresholds.
+Thresholds allow us to count the crossings of a signal, which is the number of times this signal crosses the given threshold, as well as detect the exact location of the crossings.
+Using this, we define the notion of a preserved crossing, which is a crossing that happens in the input signal, and the output signal of the autoencoder, at the same position in the signal.
+Empirically, as well as using these metrics we have seen that the used convolutional autoencoders can filter out the noise and detect spikes.
+We have presented that with an increase in compression rate, the original signal gets reconstructed less closely by the respective autoencoder.
+Additionally, using the total number of crossings and the number of preserved crossings, we have shown that the used autoencoders are not able to reconstruct every spike.
+Consistently,  the number of crossings in the decoded data was less than the number of crossings in the original data.
+With an increase in compression rate, the number of crossings, as well as the number of preserved crossings decreases.
+
+\section{Future Work}
+What is left to show is how the used autoencoders perform on human data and how the presented noise reduction and spike preservation assist in spike detection and spike sorting.
+We use the MSE between the input data and the output data to train and optimize the used autoencoders. 
+It might be possible to define a more meaningful metric in terms of what the goal of the project is, to train the autoencoders.
+Further, we shuffled the data segments used for training. 
+While this approach is typically done in the context of using a CAE, it is a non-trivial decision when working with time series data and requires further investigation.
+As presented in \Cref{sec:usedCaeArchitectures} we have used several simplifications.
+Changing the used number of filters, the kernel size, the stride, or the padding for any layer may increase the performance.
+Finally, a larger number of compression rates and architectures might have to be tested to conclude what the best-performing autoencoder is.

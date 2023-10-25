@@ -1,0 +1,282 @@
+\section{Background}
+\label{sec:background}
+In the following, we are going to present the theoretical principles of \textit{(Convolutional) Autoencoders}. 
+Further, the \textit{Compression Rate} of a given a is introduced, which is later used to distinguish between different architectures of used convolutional autoencoders.
+\subsection{Autoencoder} \label{sec:autoencoder}
+An autoencoder is a neural network usually used for unsupervised learning as it aims to recreate the input rather than to classify it under a certain class \cite{autoencoder_not_classify}.
+The network is trained on a set of input data and learns to compress the data into a lower-dimensional representation (this process is known as encoding). 
+The compressed representation is then reconstructed back to the same dimension as the input data (this process is known as decoding). 
+Autoencoders consist of two main components: 
+\begin{enumerate}
+	\item Encoder: Takes the input data and maps it into the latent representation. Or in other words, the first half of the autoencoder, where the dimension of data is progressively decreased.
+	\item Decoder: Takes the latent representation and maps it back to the original data dimension. Here the dimension of data is increased.
+\end{enumerate}
+In autoencoders, the hidden layers have progressively fewer neurons until the \textit{bottleneck} is reached. 
+The bottleneck is a layer in the neural network, which has the least amount of neurons. 
+Starting from the bottleneck the number of neurons per layer increases progressively until the output layer is reached.
+The goal of an autoencoder is to reconstruct the input data as closely as possible using the encoded representation while also learning useful features of the input data in the process.
+An important part of an autoencoder is the bottleneck. As it is the layer with the smallest amount of neurons in the whole network it restricts the flow of information from the input layer to the output layer.
+Thus, the network has to learn to let the most vital information pass through, such that the Decoder can reconstruct the input data as closely as possible.
+The abstract architecture of an autoencoder can be seen in \Cref{fig:autoencoderArchitecture}.
+\subsubsection{Convolutional autoencoder} \label{sec:convAutoencoder}
+A convolutional autoencoder (CAE) is a type of autoencoder that uses convolutional layers for both the encoding and decoding stages. Convolutional layers are commonly used in computer vision tasks to detect features in images, and in a CAE, these layers are used to detect patterns in the input data \cite{geron2017hands,geng2016human,cheng2018deep}.
+The convolution operation involves sliding a small filter or kernel over the input data and computing the dot product between the filter and the corresponding input values at each position. 
+This produces a single output value, which is then stored in the output feature map. 
+By sliding the filter over the entire input, the convolutional layer can generate a set of output feature maps that capture different patterns and features of the input data.
+Convolutional layers typically have several parameters that can be adjusted to control the behavior of the layer. 
+These include the size and stride of the filter, the number of filters in the layer, and the padding used around the input data.
+These parameters are defined and explained in the following \cite{o2015introduction,albawi2017understanding}.
+\begin{itemize}
+	\item \textit{Filters}: Refers to the number of distinct convolutions performed on the input data. Each filter generates a different output feature map. Filters enable the extraction of different features from the input data, which can help improve the accuracy of the autoencoder.
+	\item \textit{Kernel size}: Refers to the dimension of the filters used to perform the convolution operation. The size of the kernel influences the level of detail that can be captured.
+	\item \textit{Stride}: Refers to the number of data points that the filter is moved by across the input data. A stride of $2$ means that the filter moves $2$ data points at a time. This influences the degree of overlap between adjacent regions.
+	\item \textit{Padding}: Refers to the addition of extra pixels around the edges of the input data. This is done to ensure that the output size of the convolution is the same as the input size.
+\end{itemize}
+Using filters decreases the number of connections between the layers compared to a fully connected layer.
+Compared to a general autoencoder, a CAE is particularly useful for processing data with a certain structure. 
+A general autoencoder typically uses fully connected layers for the encoding and decoding stages, which are not able to capture the structural relationships between different parts of the signal. 
+A CAE, on the other hand, is able to capture these relationships by using convolutional layers.
+The signal structures which can be detected particularly also include temporal features like action potentials or spikes in neural data.
+\begin{figure}[ht]
+\centering
+\begin{tikzpicture}
+	
+	\coordinate (enc1) at (0.75,-1);
+	\coordinate (enc2) at (6.75,2);
+	\coordinate (enc3) at (6.75,5);
+	\coordinate (enc4) at (0.75,8);
+	
+	
+	\draw[fill=blue, ultra thick, nearly transparent, rounded corners]  (enc1) -- (enc2) -- (enc3) -- (enc4) -- cycle;
+	
+	\coordinate (dec1) at (11.25,-1);
+	\coordinate (dec2) at (5.25,2);
+	\coordinate (dec3) at (5.25,5);
+	\coordinate (dec4) at (11.25,8);
+	
+	\draw[fill=red, ultra thick, nearly transparent, rounded corners]  (dec1) -- (dec2) -- (dec3) -- (dec4) -- cycle;
+	
+	\draw [pen colour={mygreen}, thick,
+	decorate, 
+	decoration = {calligraphic brace,
+		raise=5pt,
+		amplitude=5pt,
+		aspect=0.5}] (-0.5,8) --  (0.5,8)
+	node[pos=0.5,above=8pt,black, thick]{Input};
+	
+	\draw [pen colour={myred}, thick,
+	decorate, 
+	decoration = {calligraphic brace,
+		raise=5pt,
+		amplitude=5pt,
+		aspect=0.5}] (11.5,8) --  (12.5,8)
+	node[pos=0.5,above=8pt,black, thick]{Output};
+	
+	\draw [pen colour={purple}, thick,
+	decorate, 
+	decoration = {calligraphic brace,
+		raise=5pt,
+		amplitude=5pt,
+		aspect=0.5}] (5.5,6) --  (6.5,6)
+	node[pos=0.5,above=8pt,black, thick]{Bottleneck};
+	
+	\draw [pen colour={blue}, ultra thick,
+	decorate, 
+	decoration = {calligraphic brace, mirror,
+		raise=5pt,
+		amplitude=5pt,
+		aspect=0.5}] (0.75,-1) --  (6,-1)
+	node[pos=0.5,below=8pt,black, ultra thick]{Encoder};
+	
+	\draw [pen colour={pink}, ultra thick,
+	decorate, 
+	decoration = {calligraphic brace, mirror,
+		raise=5pt,
+		amplitude=5pt,
+		aspect=0.5}] (6,-1) --  (11.25,-1)
+	node[pos=0.5,below=8pt,black, ultra thick]{Decoder};
+	
+	%Absolutely disgusting but tikz loop are still a mystery to me
+	%input layer
+	\node[node 1] (i0) at (0,0) {} ;
+	\node[node 1] (i1) at (0,1) {} ;
+	\node[node 1] (i2) at (0,2) {} ;
+	\node[node 1] (i3) at (0,3) {} ;
+	\node[node 1] (i4) at (0,4) {} ;
+	\node[node 1] (i5) at (0,5) {} ;
+	\node[node 1] (i6) at (0,6) {} ;
+	\node[node 1] (i7) at (0,7) {} ;
+
+	%hidden 0
+	\node[node 2] (00) at (1.5,0) {} ;
+	\node[node 2] (01) at (1.5,1) {} ;
+	\node[node 2] (02) at (1.5,2) {} ;
+	\node[node 2] (03) at (1.5,3) {} ;
+	\node[node 2] (04) at (1.5,4) {} ;
+	\node[node 2] (05) at (1.5,5) {} ;
+	\node[node 2] (06) at (1.5,6) {} ;
+	\node[node 2] (07) at (1.5,7) {} ;
+	
+	%hidden 1
+	\node[node 2] (10) at (3,1) {} ;
+	\node[node 2] (11) at (3,2) {} ;
+	\node[node 2] (12) at (3,3) {} ;
+	\node[node 2] (13) at (3,4) {} ;
+	\node[node 2] (14) at (3,5) {} ;
+	\node[node 2] (15) at (3,6) {} ;
+	
+	%hidden 2
+	\node[node 2] (20) at (4.5,2) {} ;
+	\node[node 2] (21) at (4.5,3) {} ;
+	\node[node 2] (22) at (4.5,4) {} ;
+	\node[node 2] (23) at (4.5,5) {} ;
+	
+	%hidden 3, latent
+	\node[node 4] (30) at (6,2.5) {} ;
+	\node[node 4] (31) at (6,3.5) {} ;
+	\node[node 4] (32) at (6,4.5) {} ;
+	
+	%hidden 4
+	\node[node 2] (40) at (7.5,2) {} ;
+	\node[node 2] (41) at (7.5,3) {} ;
+	\node[node 2] (42) at (7.5,4) {} ;
+	\node[node 2] (43) at (7.5,5) {} ;
+
+	%hidden 5
+	\node[node 2] (50) at (9,1) {} ;
+	\node[node 2] (51) at (9,2) {} ;
+	\node[node 2] (52) at (9,3) {} ;
+	\node[node 2] (53) at (9,4) {} ;
+	\node[node 2] (54) at (9,5) {} ;
+	\node[node 2] (55) at (9,6) {} ;
+	
+	%hidden 6 layer
+	\node[node 2] (60) at (10.5,0) {} ;
+	\node[node 2] (61) at (10.5,1) {} ;
+	\node[node 2] (62) at (10.5,2) {} ;
+	\node[node 2] (63) at (10.5,3) {} ;
+	\node[node 2] (64) at (10.5,4) {} ;
+	\node[node 2] (65) at (10.5,5) {} ;
+	\node[node 2] (66) at (10.5,6) {} ;
+	\node[node 2] (67) at (10.5,7) {} ;
+
+	%output layer
+	\node[node 3] (o0) at (12,0) {} ;
+	\node[node 3] (o1) at (12,1) {} ;
+	\node[node 3] (o2) at (12,2) {} ;
+	\node[node 3] (o3) at (12,3) {} ;
+	\node[node 3] (o4) at (12,4) {} ;
+	\node[node 3] (o5) at (12,5) {} ;
+	\node[node 3] (o6) at (12,6) {} ;
+	\node[node 3] (o7) at (12,7) {} ;
+
+	%connections
+
+	\draw[connect arrow] (i0) -- (00);
+	\draw[connect arrow] (i1) -- (01);
+	\draw[connect arrow] (i2) -- (02);
+	\draw[connect arrow] (i3) -- (03);
+	\draw[connect arrow] (i4) -- (04);
+	\draw[connect arrow] (i5) -- (05);
+	\draw[connect arrow] (i6) -- (06);
+	\draw[connect arrow] (i7) -- (07);
+	
+	\draw[connect arrow] (00) -- (10);
+	\draw[connect arrow] (01) -- (10);
+	\draw[connect arrow] (01) -- (11);
+	\draw[connect arrow] (02) -- (10);
+	\draw[connect arrow] (02) -- (11);
+	\draw[connect arrow] (02) -- (12);
+	\draw[connect arrow] (03) -- (11);
+	\draw[connect arrow] (03) -- (12);
+	\draw[connect arrow] (03) -- (13);
+	\draw[connect arrow] (04) -- (12);
+	\draw[connect arrow] (04) -- (13);
+	\draw[connect arrow] (04) -- (14);
+	\draw[connect arrow] (05) -- (13);
+	\draw[connect arrow] (05) -- (14);
+	\draw[connect arrow] (05) -- (15);
+	\draw[connect arrow] (06) -- (14);
+	\draw[connect arrow] (06) -- (15);
+	\draw[connect arrow] (07) -- (15);
+
+	\draw[connect arrow] (10) -- (20);
+	\draw[connect arrow] (11) -- (20);
+	\draw[connect arrow] (11) -- (21);
+	\draw[connect arrow] (12) -- (20);
+	\draw[connect arrow] (12) -- (21);
+	\draw[connect arrow] (12) -- (22);
+	\draw[connect arrow] (13) -- (21);
+	\draw[connect arrow] (13) -- (22);
+	\draw[connect arrow] (13) -- (23);
+	\draw[connect arrow] (14) -- (22);
+	\draw[connect arrow] (14) -- (23);
+	\draw[connect arrow] (15) -- (23);
+
+	\draw[connect arrow] (20) -- (30);
+	\draw[connect arrow] (21) -- (30);
+	\draw[connect arrow] (21) -- (31);
+	\draw[connect arrow] (22) -- (31);
+	\draw[connect arrow] (22) -- (32);
+	\draw[connect arrow] (23) -- (32);
+
+	\draw[connect arrow] (30) -- (40);
+	\draw[connect arrow] (30) -- (41);
+	\draw[connect arrow] (31) -- (41);
+	\draw[connect arrow] (31) -- (42);
+	\draw[connect arrow] (32) -- (42);
+	\draw[connect arrow] (32) -- (43);
+
+	\draw[connect arrow] (40) -- (50);
+	\draw[connect arrow] (40) -- (51);
+	\draw[connect arrow] (41) -- (51);
+	\draw[connect arrow] (40) -- (52);
+	\draw[connect arrow] (41) -- (52);
+	\draw[connect arrow] (42) -- (52);
+	\draw[connect arrow] (41) -- (53);
+	\draw[connect arrow] (42) -- (53);
+	\draw[connect arrow] (43) -- (53);
+	\draw[connect arrow] (42) -- (54);
+	\draw[connect arrow] (43) -- (54);
+	\draw[connect arrow] (43) -- (55);
+
+	\draw[connect arrow] (50) -- (60);
+	\draw[connect arrow] (50) -- (61);
+	\draw[connect arrow] (51) -- (61);
+	\draw[connect arrow] (50) -- (62);
+	\draw[connect arrow] (51) -- (62);
+	\draw[connect arrow] (52) -- (62);
+	\draw[connect arrow] (51) -- (63);
+	\draw[connect arrow] (52) -- (63);
+	\draw[connect arrow] (53) -- (63);
+	\draw[connect arrow] (52) -- (64);
+	\draw[connect arrow] (53) -- (64);
+	\draw[connect arrow] (54) -- (64);
+	\draw[connect arrow] (53) -- (65);
+	\draw[connect arrow] (54) -- (65);
+	\draw[connect arrow] (55) -- (65);
+	\draw[connect arrow] (54) -- (66);
+	\draw[connect arrow] (55) -- (66);
+	\draw[connect arrow] (55) -- (67);
+
+	\draw[connect arrow] (60) -- (o0);
+	\draw[connect arrow] (61) -- (o1);
+	\draw[connect arrow] (62) -- (o2);
+	\draw[connect arrow] (63) -- (o3);
+	\draw[connect arrow] (64) -- (o4);
+	\draw[connect arrow] (65) -- (o5);
+	\draw[connect arrow] (66) -- (o6);
+	\draw[connect arrow] (67) -- (o7);
+\end{tikzpicture}
+\caption{Abstract Architecture of an autoencoder. Notice that the Input and the Output have the same dimension and that each of the layers only connect to the respective next one. Further note that a neuron of one layer is not connected to every other neuron in the next layer.}
+\label{fig:autoencoderArchitecture}
+\end{figure}
+The Compression Rate (CR) is the ratio of the size of the original data to the size of the compressed data. 
+Formally, the compression rate is defined in \Cref{eq:cr}. 
+A higher compression rate corresponds to less information being able to pass the latent representation. 
+This, in turn, forces the CAE to learn the features of the data more efficiently.
+Different Architectures of CAE can have different compression rates.
+\begin{equation}
+	\text{CR} := \frac{\text{Original data size}}{\text{Encoded data size}}
+	\label{eq:cr}
+\end{equation}

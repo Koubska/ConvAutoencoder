@@ -1,0 +1,44 @@
+\section{Introduction}
+\label{sec:intro}
+Pain is a multifaceted sensory and emotional sensation.
+It serves as the body's alarm system, warning us of impending damage or harm and encouraging preventive activities.
+However, when pain persists for an extended time, it can develop into a debilitating condition with adverse effects on a person's quality of life.
+Neuroscience, psychology, and medicine are just a few of the numerous fields involved in the study of pain \cite{robins2016pain,eccleston2013psychological}.
+In recent years, there has been an increase in interest in using neuroimaging techniques to study the brain mechanisms underlying pain perception and the development of chronic pain conditions \cite{schmidt2015neuroimaging, da2019neuroimaging}.
+The technique of Microneurography (MNG) records the activity of single C-nociceptors in patients with neuropathic pain, providing an approach to investigate the underlying mechanisms of pathological discharges in these peripheral nerve fibers \cite{vallbo2004microneurography,vallbo2018microneurography}.
+MNG employs a thin electrode placed within a peripheral nerve to record action potentials from neighboring fibers, but sorting these signals to single nerve fibers is necessary to understand neural coding. 
+However, standard shape-based sorting algorithms, successful in in-vitro data, cannot be reliably used in MNG due to low signal-to-noise ratio and high variability in spike shapes. %TODO Reference
+Thus, there are two problems: 
+\begin{enumerate*}
+	\item Spike Detection and
+	\item Spike Sorting.
+\end{enumerate*}
+In this report, we are going to introduce \textit{Convolution Autoencoders (CAE)} to help with the aforementioned problems.
+A CAE is a special type of  autoencoder, which is commonly used in computer vision tasks to detect features in images, as they can detect patterns in input data \cite{geron2017hands,geng2016human,cheng2018deep}.
+Because a CAE is capable of detecting the most important parts of the input data, the hope is that spikes get detected and appropriately compressed (Encoder) and decompressed (Decoder).
+Further, spike detection and further analysis can be done on the encoded data.
+For that to work reasonably the features in the signal in form of the spikes have to be detected and preserved by a used CAE.
+The workflow of this project can be seen in \Cref{fig:workflow}.
+\begin{figure}[h]
+	\centering
+	\begin{tikzpicture}
+		\node[flow, fill=green!20] at (1,0) (rawData) {Raw Data};
+		\node[flow, fill=green!20] at (4,0) (cleanup) {Cleanup};
+		\node[flow, fill=green!20] at (6,0) (normalize) {Normalizing};
+		\node[flow, fill=blue!20] at (6,-1) (encode) {Encode};
+		\node[flow, fill=purple!20] at (4,-1) (analyze) {Analyze};
+		\node[flow, fill=pink!20] at (2,-1) (decode) {Decode};
+		\node[flow, fill=black!20] at (0,-1) (compare) {Compare};
+		\path[connector] (rawData) --(cleanup);
+		\path[connector] (cleanup) -- (normalize);
+		\path[connector] (normalize) -- (encode);
+		\path[connector] (encode) -- (analyze);
+		\path[connector] (analyze) -- (decode);
+		\path[connector] (decode) -- (compare);
+		\draw[thick, green, draw] ($(cleanup.north west) + (-0.2,0.2)$) rectangle ($(normalize.south east) + (0.2,-0.2)$);
+		\node[] at (5,0.7) (preproc) {Preprocessing};
+	\end{tikzpicture}
+	\label{fig:workflow}
+	\caption{Workflow for using CAEs to compress and extract features of neural data.}
+\end{figure}
+\FloatBarrier

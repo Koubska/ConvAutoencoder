@@ -1,0 +1,53 @@
+This is BibTeX, Version 0.99d (TeX Live 2023/Arch Linux)
+Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
+The top-level auxiliary file: main.aux
+The style file: plain.bst
+Database file #1: citations.bib
+Warning--entry type for "amdDevContainer" isn't style-file defined
+--line 89 of file citations.bib
+Warning--entry type for "gitlabrepo" isn't style-file defined
+--line 164 of file citations.bib
+Warning--to sort, need author or key in amdDevContainer
+Warning--to sort, need author or key in gitlabrepo
+You've used 22 entries,
+            2118 wiz_defined-function locations,
+            629 strings with 8783 characters,
+and the built_in function-call counts, 8154 in all, are:
+= -- 760
+> -- 524
+< -- 5
++ -- 208
+- -- 185
+* -- 617
+:= -- 1387
+add.period$ -- 68
+call.type$ -- 22
+change.case$ -- 154
+chr.to.int$ -- 0
+cite$ -- 24
+duplicate$ -- 264
+empty$ -- 554
+format.name$ -- 185
+if$ -- 1661
+int.to.chr$ -- 0
+int.to.str$ -- 22
+missing$ -- 19
+newline$ -- 111
+num.names$ -- 42
+pop$ -- 172
+preamble$ -- 1
+purify$ -- 133
+quote$ -- 0
+skip$ -- 196
+stack$ -- 0
+substring$ -- 367
+swap$ -- 57
+text.length$ -- 5
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 86
+warning$ -- 2
+while$ -- 65
+width$ -- 24
+write$ -- 234
+(There were 4 warnings)

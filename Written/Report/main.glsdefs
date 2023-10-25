@@ -1,0 +1,28 @@
+\glsdefs@newdocentry{cnn}%
+{%
+name={CNN},%
+sort={CNN},%
+type={acronym},%
+first={convolutional neural network\glsspace (CNN)},%
+firstplural={convolutional neural network\acrpluralsuffix \glsspace (CNN\acrpluralsuffix )},%
+text={CNN},%
+plural={CNN\acrpluralsuffix },%
+description={convolutional neural network},%
+descriptionplural={convolutional neural network\acrpluralsuffix },%
+symbol={\relax },%
+symbolplural={\relax },%
+user1={},%
+user2={},%
+user3={},%
+user4={},%
+user5={},%
+user6={},%
+long={convolutional neural network},%
+longplural={convolutional neural networks},%
+short={CNN},%
+shortplural={CNNs},%
+counter={page},%
+parent={},%
+%
+}%
+
